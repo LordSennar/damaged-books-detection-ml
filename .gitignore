@@ -164,3 +164,8 @@ cython_debug/
 
 # all pytorch lightning logs
 lightning_logs/
+
+# weights and biases and checkpoints
+*.ckpt
+*.wandb
+/experimenting/wandb/*
