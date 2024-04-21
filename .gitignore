@@ -169,3 +169,4 @@ lightning_logs/
 *.ckpt
 *.wandb
 /experimenting/wandb/*
+*.png
