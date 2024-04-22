@@ -11,7 +11,7 @@ class ImageApp:
     INPUT_FOLDER = "../predicted_images/"
     CANVAS_WIDTH = 800
     CANVAS_HEIGHT = 500
-    no_images_left_placeholder = "resources/no-images-placeholder.png"
+    no_images_left_placeholder = "../resources/placeholder.jpg"
 
     def __init__(self, root):
         self.draw = None
@@ -46,7 +46,6 @@ class ImageApp:
         self.load_images_from_directory()
 
     def load_images_from_directory(self):
-        print(self.INPUT_FOLDER)
         self.image_paths = [os.path.join(self.INPUT_FOLDER, filename) for filename in os.listdir(self.INPUT_FOLDER) if
                             filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp'))]
         print(self.image_paths)
@@ -76,6 +75,7 @@ class ImageApp:
             self.show_placeholder()
 
     def show_placeholder(self):
+        print("hi")
         placeholder = Image.open(self.no_images_left_placeholder)
         placeholder.thumbnail((self.CANVAS_WIDTH, self.CANVAS_HEIGHT))
         ph = ImageTk.PhotoImage(placeholder)
