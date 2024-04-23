@@ -41,14 +41,14 @@ class ImageApp:
 
 
 
-
+        self.root.bind("<Left>", lambda e: self.prev_image())
+        self.root.bind("<Right>", lambda e: self.next_image())
 
         self.load_images_from_directory()
 
     def load_images_from_directory(self):
         self.image_paths = [os.path.join(self.INPUT_FOLDER, filename) for filename in os.listdir(self.INPUT_FOLDER) if
                             filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp'))]
-        print(self.image_paths)
         self.show_current_image()
 
     def show_current_image(self):
