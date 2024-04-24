@@ -138,7 +138,7 @@ class ImageApp:
 
     def drawDamages(self, labels, boxes):
         # TODO draw damages into the currently displayed file, show it on the cnavas? self.draw verwenden...
-        deleteDraws()
+        #deleteDraws()
 
         pil_img = self.current_image
 
