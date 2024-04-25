@@ -13,11 +13,10 @@ class ImageApp:
     training_script_path = 'train.py'
     INPUT_FOLDER = "../predicted_images/"
     COCO_FILENAME = "coco_predictions.json"
-    CANVAS_WIDTH = 800
-    CANVAS_HEIGHT = 500
-    COLORS = [[0.000, 0.447, 0.741], [0.850, 0.325, 0.098], [0.929, 0.694, 0.125],
-            [0.494, 0.184, 0.556], [0.466, 0.674, 0.188], [0.301, 0.745, 0.933]]
-    
+    CANVAS_WIDTH = 1800
+    CANVAS_HEIGHT = 1000
+    #COLORS = [(0.000, 0.447, 0.741), (0.850, 0.325, 0.098), (0.929, 0.694, 0.125), (0.494, 0.184, 0.556), (0.466, 0.674, 0.188), (0.301, 0.745, 0.933)]
+    COLORS = [(100, 100, 100), (234, 123, 35), (211, 85, 111)]
     no_images_left_placeholder = "../resources/placeholder.jpg"
 
     def __init__(self, root):
@@ -73,6 +72,7 @@ class ImageApp:
             image_path = self.image_paths[self.image_index]
             image = Image.open(image_path)
             width, height = image.size
+            self.scale = [(self.CANVAS_WIDTH/(width/100))/100, (self.CANVAS_HEIGHT/(height/100))/100]
             image.thumbnail((self.CANVAS_WIDTH, self.CANVAS_HEIGHT))
             image_name = image_path.split("/")[-1]
             
@@ -143,33 +143,48 @@ class ImageApp:
         return annotations
     
     def deleteDraws(self):
-        # TODO delete drawings on unsing a new image
+        # TODO delete drawings on using a new image
         pass
 
     def drawDamages(self, draw, annotations):
         # TODO draw damages into the currently displayed file, show it on the cnavas? self.draw verwenden...
         #deleteDraws()
-        print("annotations ", annotations)
+        
 
         colors = self.COLORS * 100
+
         self.sum_damages = {}
         for i in range(len(annotations)):
-            label, (xmin, ymin, xmax, ymax),c = int(annotations[i]["category_id"]), annotations[i]["bbox"], colors
-            draw.rectangle((xmin, ymin), xmax - xmin, ymax - ymin,
-                                fill=False, color=c, linewidth=2)
+            label = int(annotations[i]["category_id"])
+            bbox = annotations[i]["bbox"]
+            c = colors[i]
+            
+            xmin, ymin, xmax, ymax = bbox
+            # print(xmin, ymin, xmax, ymax)
+            xmin, ymin, xmax, ymax = xmin * self.scale[0] , ymin * self.scale[1], xmax * self.scale[0], ymax * self.scale[1]
+            
+            # print(xmin * self.scale[0], ymin * self.scale[1], xmax * self.scale[0], ymax * self.scale[1])
+            draw.rectangle([xmin, ymin, 
+                            xmax, ymax],
+                            fill=None, 
+                            outline="red", 
+                            width=2)
+            
             text = f'{self.label[label]}'
             if text in self.sum_damages:
                 self.sum_damages.update({text: self.sum_damages[text] + 1})
             else: 
                 self.sum_damages.update({text:1})
-            draw.text(xmin, ymin, text, fontsize=10,
-                    bbox=dict(facecolor='yellow', alpha=0.5))
-        plt.axis('off')
-        plt.show()
+            draw.text((xmin, ymin), 
+                      text, 
+                      font_size=10)
+            
+        print(self.sum_damages)
+        #plt.axis('off')
  
 
 
-    
+
 
 if __name__ == "__main__":
     root = tk.Tk()
