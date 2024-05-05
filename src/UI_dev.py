@@ -143,11 +143,11 @@ class ImageApp:
         return annotations
     
     def deleteDraws(self):
-        # TODO delete drawings on using a new image
+        # TODO delete drawings on using a new image, if needed
         pass
 
     def drawDamages(self, draw, annotations):
-        # TODO draw damages into the currently displayed file, show it on the cnavas? self.draw verwenden...
+
         #deleteDraws()
         
 
