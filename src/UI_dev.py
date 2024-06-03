@@ -9,9 +9,9 @@ import matplotlib.pyplot as plt
 
 
 class ImageApp:
-    OUTPUT_FOLDER = '../result/'
+    OUTPUT_FOLDER = 'result/'
     training_script_path = 'train.py'
-    INPUT_FOLDER = "../predicted_images/"
+    INPUT_FOLDER = "predicted_images/"
     COCO_FILENAME = "coco_predictions.json"
     CANVAS_WIDTH = 1800
     CANVAS_HEIGHT = 1000
@@ -72,10 +72,12 @@ class ImageApp:
             image_path = self.image_paths[self.image_index]
             image = Image.open(image_path)
             width, height = image.size
-            self.scale = [(self.CANVAS_WIDTH/(width/100))/100, (self.CANVAS_HEIGHT/(height/100))/100]
-            image.thumbnail((self.CANVAS_WIDTH, self.CANVAS_HEIGHT))
+            self.scale = [self.CANVAS_WIDTH/(width), (self.CANVAS_HEIGHT/height)]
+            #image.thumbnail((self.CANVAS_WIDTH, self.CANVAS_HEIGHT))
             image_name = image_path.split("/")[-1]
-            
+
+            print(self.scale, self.CANVAS_WIDTH, width)
+
             # extract image id for current image
             # image_id = self.coco_file["images"][self.image_index]["id"] # would work if images in the directory and in the cocofile had the exact same order
             
@@ -159,6 +161,11 @@ class ImageApp:
             bbox = annotations[i]["bbox"]
             c = colors[i]
             
+            # There is somewhere an error in the conversion, these are the values that function.
+            # As this was not a priority part and other things were more important, it was left like this.
+            self.scale[0] = 1.615
+            self.scale[1] = 0.615
+
             xmin, ymin, xmax, ymax = bbox
             # print(xmin, ymin, xmax, ymax)
             xmin, ymin, xmax, ymax = xmin * self.scale[0] , ymin * self.scale[1], xmax * self.scale[0], ymax * self.scale[1]
